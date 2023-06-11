@@ -1,4 +1,6 @@
 ## Description of the Program
+*For some reason, GitHub likes to break the formatting on my comments. I guess "tab" is different in my editor (Visual Studio 2019) and on GitHub.*
+*Code is in the **Proj6_klucinej.asm** file*
 
 This program, titled "String Primitives and Macros" (Proj6_klucinej.asm), is an assembly project developed by John Klucinec for CS271 Section 400 at Oregon State University. The program is designed to practice low-level I/O procedures by taking a series of signed decimal integers from the user, storing them in an array, and then calculating and displaying their sum and truncated average. The program also includes error handling for invalid input and ensures that the input numbers are within the range of 32-bit signed integers.
 Overview of the Code
