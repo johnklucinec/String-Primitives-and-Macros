@@ -9,6 +9,8 @@ TITLE String Primitives and Macros     (Proj6_klucinej.asm)
 ; Description: The program is designed to practice low-level I/O procedures by taking a series of signed decimal integers from the user, 
 ; storing them in an array, and then calculating and displaying their sum and truncated average. The program also includes error handling 
 ; for invalid input and ensures that the input numbers are within the range of 32-bit signed integers.
+;
+; All code was type by me. No template was used. 
 
 INCLUDE Irvine32.inc
 
@@ -20,13 +22,13 @@ mGetString MACRO promptOffset, memoryOffset, countValue, bytesReadOffset
   PUSH	ECX
   PUSH	EAX
     
-  mDisplayString promptOffset					; Display the prompt using mDisplayString macro
+  mDisplayString promptOffset							; Display the prompt using mDisplayString macro
 
-  MOV	EDX, memoryOffset						; Set memory location for input
-  MOV	ECX, countValue							; Set the max length of input string
+  MOV	EDX, memoryOffset							; Set memory location for input
+  MOV	ECX, countValue								; Set the max length of input string
   CALL	ReadString								; Read the input string from the user
 
-  MOV	[bytesReadOffset], EAX					; Store the number of bytes read
+  MOV	[bytesReadOffset], EAX							; Store the number of bytes read
 
   POP	EAX
   POP	ECX							
@@ -35,7 +37,7 @@ ENDM
 
 mDisplayString	MACRO	stringOffset
   PUSH	EDX						
-  MOV	EDX, stringOffset						; Set memory location for output
+  MOV	EDX, stringOffset							; Set memory location for output
   CALL	WriteString
   POP	EDX							
 ENDM
@@ -77,8 +79,8 @@ convSTR		SDWORD	0							; Converted String
 sum		    SDWORD	0
 average		SDWORD	0							; Truncated average
 
-inputBuffer BYTE	BUFFER_SIZE DUP(?)			; Buffer to store user input
-outBuffer	BYTE	BUFFER_SIZE DUP(?)			; Reserve space for the output buffer
+inputBuffer BYTE	BUFFER_SIZE DUP(?)					; Buffer to store user input
+outBuffer	BYTE	BUFFER_SIZE DUP(?)					; Reserve space for the output buffer
 bytesRead   DWORD	?							; Variable to store number of bytes read
 
 .code
@@ -102,7 +104,7 @@ _fillArray:
   call ReadVal
 
   mov EAX, convSTR								; Move the value of convSTR to EAX (filling array)
-  mov array[EBX*4], EAX							; Store the value of EAX in the current position of the array
+  mov array[EBX*4], EAX								; Store the value of EAX in the current position of the array
 
   inc EBX												
   loop _fillArray										
@@ -129,7 +131,7 @@ _fillArray:
   push	OFFSET goodBye
   call	Farewell	
 
-	Invoke ExitProcess,0						; exit to operating system
+	Invoke ExitProcess,0							; exit to operating system
 main ENDP
 
 ; -- ReadVal --
@@ -166,11 +168,11 @@ _checkSign:
   cmp   AL, '+'				
   je    _subSign								; If AL contains a '+', jump to the next character
   cmp   AL, '-'			
-  jne   _processChar							; If not a sign character, process the current character
+  jne   _processChar								; If not a sign character, process the current character
   mov   EDX, 1									; Set EDX to 1 if negative
 
 _subSign:
-  dec   ECX										; Decrement ECX to account for the sign character
+  dec   ECX									; Decrement ECX to account for the sign character
   jmp   _nextChar										
 
 _processChar:
@@ -179,7 +181,7 @@ _processChar:
   cmp	AL, 9
   jg	_error									; If yes, it's an invalid character, jump to error handling
 
-  push	ECX										; Save ECX for 10x loop.
+  push	ECX									; Save ECX for 10x loop.
   add	ECX, -1	
   cmp	ECX, 0
   jle	_skip									; Jump if number has correct amount of 0's
@@ -197,8 +199,8 @@ _storeValue:
   cmp	EBX, LO									; Check if > the maximum negative SDWORD
   ja	_error									; If yes, jump to error handling
   cmp	EDX, 1									; Check if the number is negative
-  jne	_testPositive							; If not, jump to store positive value
-  neg   EBX										; Negate EBX to store the negative value
+  jne	_testPositive								; If not, jump to store positive value
+  neg   EBX									; Negate EBX to store the negative value
   jmp	_store
 
 _testPositive:
@@ -207,12 +209,12 @@ _testPositive:
 
 _store:
   mov   EAX, EBX
-  mov	EDI, [EBP+20]							; Move the address of the array to EDI
-  stosd											; Store the value in EAX at the address pointed to by EDI and increment EDI
+  mov	EDI, [EBP+20]								; Move the address of the array to EDI
+  stosd										; Store the value in EAX at the address pointed to by EDI and increment EDI
   jmp	_done
 		
 _error:
-  mDisplayString [EBP+28]						; Display the error message
+  mDisplayString [EBP+28]							; Display the error message
   ; Collect user input, but with prompt2
   mGetString	[EBP+24], [EBP+12], BUFFER_SIZE, [EBP+8]	
   jmp	_restart
@@ -247,13 +249,13 @@ WriteVal PROC
   push  ESI
 
   ; Clear outBuffer
-  mov   ECX, BUFFER_SIZE						; Set loop counter BUFFER_SIZE
-  mov   EDI, [EBP+12]							; Load the address of outBuffer into EDI
+  mov   ECX, BUFFER_SIZE							; Set loop counter BUFFER_SIZE
+  mov   EDI, [EBP+12]								; Load the address of outBuffer into EDI
 _clearLoop:
   cld
   mov	AL,0
   stosb
-  dec   ECX										; Decrement the loop counter
+  dec   ECX									; Decrement the loop counter
   jnz   _clearLoop								; Continue looping until counter reaches 0
 
   mov   EAX, [EBP+8]
@@ -268,16 +270,16 @@ _clearLoop:
   je    _zero
   jg    _writeInt
   mov   ESI, 1									; Remember if number is negative
-  neg	EAX										; Neg EAX for printing
+  neg	EAX									; Neg EAX for printing
 
 _writeInt:
-  inc   EBX										; Increment count variable
+  inc   EBX									; Increment count variable
   xor   EDX, EDX     
   mov   ECX, 10
   div   ECX
   add   DL, '0'									; Convert the remainder to a character
-  dec   EDI										; Move to the next character
-  mov   BYTE PTR [EDI], DL						; Store the character
+  dec   EDI									; Move to the next character
+  mov   BYTE PTR [EDI], DL							; Store the character
   test  EAX, EAX           
   jnz   _writeInt								; Continue if EAX is not zero
 
@@ -292,9 +294,9 @@ _zero:
   jmp   _done
 
 _addSign:
-  dec   EDI										; Move to the next character
-  mov   BYTE PTR [EDI], '-'						; Store the character
-  inc   EBX										; Increment count variable
+  dec   EDI									; Move to the next character
+  mov   BYTE PTR [EDI], '-'							; Store the character
+  inc   EBX									; Increment count variable
 
 _done:
   mov   EDX, [EBP+12]
@@ -326,32 +328,32 @@ WriteArray PROC
   push  EDI
   push  ECX
 
-  mov   EDI, [EBP+8]							; Address of the array
-  mov   ECX, ARRAYSIZE							; Number of elements in the array
+  mov   EDI, [EBP+8]								; Address of the array
+  mov   ECX, ARRAYSIZE								; Number of elements in the array
 
   ; Write Results
   mov   EDX, [EBP+12]
-  mDisplayString EDX							; Title to print for the array
+  mDisplayString EDX								; Title to print for the array
 
   xor   EDX, EDX								; Initialize index to 0
 
 _printLoop:
   cmp   EDX, ECX								; Compare index with the number of elements
-  jge   _endPrintLoop							; If index >= number of elements, exit loop
+  jge   _endPrintLoop								; If index >= number of elements, exit loop
 
-  mov   EBX, [EDI + EDX * 4]					; Copy the array element to the EBX register
+  mov   EBX, [EDI + EDX * 4]							; Copy the array element to the EBX register
   push  [EBP+16]
   push  EBX
   call  WriteVal								; Print the number
 
-  inc   EDX										; Increment the index
+  inc   EDX									; Increment the index
 
   cmp   EDX, ECX								; Compare index with the number of elements
-  jge   _endPrintLoop							; If index >= number of elements, exit loop
+  jge   _endPrintLoop								; If index >= number of elements, exit loop
 
   ; Print the comma and space
-  mDisplayString  [EBP+20]						; Print comma
-  mDisplayString  [EBP+24]						; Print space
+  mDisplayString  [EBP+20]							; Print comma
+  mDisplayString  [EBP+24]							; Print space
 
   jmp   _printLoop         
 
@@ -379,9 +381,9 @@ FindSum PROC
   push	EDI
   push	ECX
 
-  mov	EDI, [EBP+8]							; Address of the array
-  mov	EBX, [EBP+12]							; Address of an SDWORD that will store the sum			
-  mov	ECX, ARRAYSIZE							; Number of elements in the array
+  mov	EDI, [EBP+8]								; Address of the array
+  mov	EBX, [EBP+12]								; Address of an SDWORD that will store the sum			
+  mov	ECX, ARRAYSIZE								; Number of elements in the array
 
   xor   EAX, EAX								; Initialize sum to 0
   xor   EDX, EDX								; Initialize index to 0
@@ -390,8 +392,8 @@ _sumLoop:
   cmp   EDX, ECX								; Compare index with the number of elements
   jge   _endSumLoop								; If index >= number of elements, exit loop
 
-  add   EAX, [EDI + EDX * 4]					; Add the value of the array element to the sum 
-  inc   EDX										; Increment the index
+  add   EAX, [EDI + EDX * 4]							; Add the value of the array element to the sum 
+  inc   EDX									; Increment the index
 
   jmp   _sumLoop        
 
@@ -400,7 +402,7 @@ _endSumLoop:
   
   ; Write Results
   mov	EDX, [EBP+16]
-  mDisplayString EDX							; Title to print for the sum
+  mDisplayString EDX								; Title to print for the sum
 
   push	[EBP+20]
   push	EBX
@@ -428,9 +430,9 @@ FindAverage PROC
   push  EDI
   push  ECX
 
-  mov   EDI, [EBP+8]							; Address of the array
-  mov   EBX, [EBP+12]							; Address of an SDWORD that will store the truncated average
-  mov   ECX, ARRAYSIZE							; Number of elements in the array
+  mov   EDI, [EBP+8]								; Address of the array
+  mov   EBX, [EBP+12]								; Address of an SDWORD that will store the truncated average
+  mov   ECX, ARRAYSIZE								; Number of elements in the array
 
   xor   EAX, EAX								; Initialize average to 0
   xor   EDX, EDX								; Initialize index to 0
@@ -439,24 +441,24 @@ _sumLoop:
   cmp   EDX, ECX								; Compare index with the number of elements
   jge   _endSumLoop								; If index >= number of elements, exit loop
 
-  add   EAX, [EDI + EDX * 4]					; Add the value of the array element to the sum (scaled index addressing)
-  inc   EDX										; Increment the index
+  add   EAX, [EDI + EDX * 4]							; Add the value of the array element to the sum (scaled index addressing)
+  inc   EDX									; Increment the index
 
   jmp   _sumLoop							
 
 _endSumLoop:
   cdq                      
-  idiv  ECX										; Divide EAX by the number of elements 
+  idiv  ECX									; Divide EAX by the number of elements 
   mov   EBX, EAX								; Store the truncated average in the provided SDWORD variable
   
   ; Write Results
   mov   EDX, [EBP+16]
-  mDisplayString EDX							; Title to print for the average
+  mDisplayString EDX								; Title to print for the average
 
   push  [EBP+20]
   push  EBX
   call  WriteVal								; Print the truncated average
-												; I realized I could have used the sum instead of looping.
+										; I realized I could have used the sum instead of looping.
 
   pop   ECX
   pop   EDI
@@ -478,14 +480,14 @@ Introduction PROC
   push	EDX
 
   mov   EDX, [EBP+8]      
-  mDisplayString EDX							; "Please provide"
+  mDisplayString EDX								; "Please provide"
   mov   EDX, [EBP+12]      
-  mDisplayString EDX							; " signed decimal integers."
+  mDisplayString EDX								; " signed decimal integers."
   push	[EBP+20]
-  push	OFFSET ARRAYSIZE						; Size of the array
+  push	OFFSET ARRAYSIZE							; Size of the array
   call	WriteVal	
   mov   EDX, [EBP+16]      
-  mDisplayString EDX							; "Rest of the introduction"
+  mDisplayString EDX								; "Rest of the introduction"
 
   pop	EDX
   pop   EBP
@@ -504,7 +506,7 @@ Farewell PROC
   push	EDX
 
   mov   EDX, [EBP+8]      
-  mDisplayString EDX             ; "Thanks for using my program"
+  mDisplayString EDX             						; "Thanks for using my program"
 
   pop	EDX
   pop   EBP
