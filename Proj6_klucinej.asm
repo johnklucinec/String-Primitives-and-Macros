@@ -24,9 +24,9 @@ mGetString MACRO promptOffset, memoryOffset, countValue, bytesReadOffset
 	
   mDisplayString promptOffset	; Display the prompt using mDisplayString macro
 
-  MOV   EDX, memoryOffset		  ; Set memory location for input
-  MOV   ECX, countValue			  ; Set the max length of input string
-  CALL	ReadString				    ; Read the input string from the user
+  MOV   EDX, memoryOffset		; Set memory location for input
+  MOV   ECX, countValue			; Set the max length of input string
+  CALL	ReadString				; Read the input string from the user
 
   MOV	[bytesReadOffset], EAX	; Store the number of bytes read
 
@@ -44,10 +44,10 @@ ENDM
 
 ; Define constants to represent the array size and lower and upper limits of the valid range
 
-ARRAYSIZE	  = 10          ; Size of the array
-BUFFER_SIZE	= 12			    ; Maximum SDWORD digits (11) + null terminator (1)
-LO			    = 2147483648  ; Maximum negative SDWORD
-HI			    = 2147483647  ; Maximum positive SDWORD
+ARRAYSIZE	= 10        	; Size of the array
+BUFFER_SIZE	= 12			; Maximum SDWORD digits (11) + null terminator (1)
+LO			= 2147483648	; Maximum negative SDWORD
+HI			= 2147483647 	; Maximum positive SDWORD
 
 ; ------------------------------------
 ; Data section containing strings, variables, and arrays
@@ -59,8 +59,8 @@ HI			    = 2147483647  ; Maximum positive SDWORD
 intro1  BYTE	"Program to practice designing low-level I/O procedures			By: Johnny Klucinec", 13, 10, 13, 10, 0
 intro2  BYTE	"Please provide ", 0
 intro3  BYTE	" signed decimal integers. "
-			  BYTE	13, 10,"Each number needs to be small enough to fit inside a 32 bit register. After you have finished inputting "
-			  BYTE	"the raw numbers I will display a list of the integers, their sum, and their average value.", 13, 10, 13, 10, 0
+		BYTE	13, 10,"Each number needs to be small enough to fit inside a 32 bit register. After you have finished inputting "
+		BYTE	"the raw numbers I will display a list of the integers, their sum, and their average value.", 13, 10, 13, 10, 0
 
 ; Prompt messages
 prompt1     BYTE	"Please enter an signed number: ", 0
@@ -75,13 +75,13 @@ space       BYTE	" ",0
 
 ; Data declarations
 array     SDWORD	ARRAYSIZE DUP(?)
-convSTR   SDWORD	0                     ; Converted String
+convSTR   SDWORD	0                   ; Converted String
 sum       SDWORD	0
-average   SDWORD	0                     ; Truncated average
+average   SDWORD	0                   ; Truncated average
 
 inputBuffer BYTE	BUFFER_SIZE DUP(?)	; Buffer to store user input
 outBuffer	  BYTE	BUFFER_SIZE DUP(?)	; Reserve space for the output buffer
-bytesRead   DWORD	?					          ; Variable to store number of bytes read
+bytesRead   DWORD	?					; Variable to store number of bytes read
 
 .code
 main PROC
