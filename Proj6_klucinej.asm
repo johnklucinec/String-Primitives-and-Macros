@@ -92,19 +92,19 @@ main PROC
   push	OFFSET intro1
   call	Introduction
 
-  mov	ECX, ARRAYSIZE
-  xor	EBX, EBX				; Set EBX to 0 for the index
+  mov ECX, ARRAYSIZE
+  xor EBX, EBX				; Set EBX to 0 for the index
 _fillArray:
-  push	OFFSET error
-  push	OFFSET prompt2
-  push	OFFSET convSTR
-  push	OFFSET prompt1
-  push	OFFSET inputBuffer
-  push	OFFSET bytesRead
-  call	ReadVal
+  push OFFSET error
+  push OFFSET prompt2
+  push OFFSET convSTR
+  push OFFSET prompt1
+  push OFFSET inputBuffer
+  push OFFSET bytesRead
+  call ReadVal
 
-  mov	EAX, convSTR			; Move the value of convSTR to EAX (filling array)
-  mov	array[EBX*4], EAX		; Store the value of EAX in the current position of the array
+  mov EAX, convSTR			; Move the value of convSTR to EAX (filling array)
+  mov array[EBX*4], EAX		; Store the value of EAX in the current position of the array
 
   inc EBX												
   loop _fillArray										
